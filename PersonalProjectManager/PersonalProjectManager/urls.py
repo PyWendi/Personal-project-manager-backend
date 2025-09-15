@@ -19,6 +19,8 @@ from django.urls import path, include
 from django.http import HttpResponse
 from ninja import NinjaAPI
 
+# Importing route
+
 api = NinjaAPI()
 
 @api.get("/add/{a}/{b}")
@@ -29,5 +31,6 @@ def add (request, a:int, b:int):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('baton/', include('baton.urls')),
-    path("api/", api.urls),
+    # path("api/", api.urls),
+    path("auth/", include("applications.authentication.urls"))
 ]

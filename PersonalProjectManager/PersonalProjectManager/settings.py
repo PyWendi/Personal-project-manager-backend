@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'applications.authentication',
+
     'corsheaders',
     "rest_framework",
     "rest_framework_simplejwt",
@@ -137,6 +139,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = "authentication.customuser"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
