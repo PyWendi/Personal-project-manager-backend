@@ -1,7 +1,26 @@
 .venv
 .venv/*
+.env
+.common
+.winvenv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
 .idea
 .idea/*
+
+__pycache__/
+__pycache__
+
+# Visual Studio Code #
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history
 
 PersonalProjectManager/db.sqlite3
