@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from baton.ai import AIModels
+from datetime import timedelta
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -36,8 +39,9 @@ INSTALLED_APPS = [
     'corsheaders',
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
 
-    'baton.autodiscover'
+    'baton.autodiscover',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +60,7 @@ ROOT_URLCONF = 'PersonalProjectManager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,6 +80,21 @@ PASSWORD_HASHERS = [
 ]
 
 WSGI_APPLICATION = 'PersonalProjectManager.wsgi.application'
+
+# Email config
+# for developement
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# for production
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("SMTP_HOST")
+EMAIL_PORT = int(os.getenv("SMTP_PORT"))  # 👈 important de caster en int
+EMAIL_USE_TLS = os.getenv("USE_TLS")
+EMAIL_USE_SSL = os.getenv("USE_SSL")
+EMAIL_HOST_USER = os.getenv("SMTP_USER")
+EMAIL_HOST_PASSWORD = os.getenv("SMTP_PASS")
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 # Redis configuration
 REDIS_HOST_CONFIG_ON_SERVER_OR_LOCALLY = [(os.getenv("REDIS_LOCALE_URL"), os.getenv("REDIS_PORT"))]
@@ -163,7 +182,7 @@ INTERNAL_IPS = [
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
-
+# Baton configuration
 BATON = {
     'SITE_HEADER': 'Project-Manager',
     'SITE_TITLE': 'Project-Manager',
@@ -232,4 +251,39 @@ BATON = {
             { 'type': 'free', 'label': 'Another custom link', 'url': 'http://www.google.it' },
         ] },
     )
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(weeks=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True, # Change the refrechsh token every new acces token refresh
+    "UPDATE_LAST_LOGIN": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+    "JTI_CLAIM": "jti",
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    # "TOKEN_OBTAIN_SERIALIZER": "applications.authentication.serialisers.CustomTokenObtainPairSerialiser",
+    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer"
 }

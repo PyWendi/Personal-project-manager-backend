@@ -27,5 +27,4 @@ staticfiles/
 !.vscode/extensions.json
 .history
 
-PersonalProjectManager/db.sqlite3
-PersonalProjectManager/.env
+db.sqlite3

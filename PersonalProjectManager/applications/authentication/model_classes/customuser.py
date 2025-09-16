@@ -29,6 +29,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     profile_img = models.ImageField(upload_to=upload_image, blank=True, null=True)
     subscribe_type = models.CharField(max_length=2, choices=SUBSCRIBE_TYPE, default="FR")
 
+    # Exclude on serialization
     date_joined = models.DateTimeField(auto_now_add=True, editable=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
