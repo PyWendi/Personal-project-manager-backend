@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 # local import of manager and other model
 from .manager import CustomUserManager
+import uuid
 
 #Function to upload file etc
 def upload_image(instance, filename):
@@ -19,6 +20,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ("PR", "Premium tier"),
     ]
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(unique=True)

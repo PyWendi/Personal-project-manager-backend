@@ -25,3 +25,7 @@ class ResponseSchema(Schema):
 class  CodeSchema(Schema):
     code: str
     email: str
+
+class ResetPasswordSchema(Schema):
+    password: str
+    email: str

@@ -29,3 +29,5 @@ staticfiles/
 
 PersonalProjectManager/db.sqlite3
 PersonalProjectManager/.env
+
+.todo

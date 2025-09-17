@@ -1,5 +1,5 @@
 from django.contrib.auth.models import BaseUserManager
-from django.contrib.auth.hashers import make_password
+# from django.contrib.auth.hashers import make_password
 
 class CustomUserManager(BaseUserManager):
     """
@@ -10,7 +10,8 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("The email must not be empty")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.password = make_password(password)
+        # user.password = make_password(password)
+        user.set_password(password)
         user.save(using=self.db)
         return user
 
